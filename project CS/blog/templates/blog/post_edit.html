@@ -1,0 +1,10 @@
+{% extends 'blog/base.html' %}
+
+    {% block content %}
+        <h1>New SMS notification</h1>
+        <form method="POST" class="post-form">{% csrf_token %}
+            {{ form.as_p }}
+            <h5 face="Century Gothic" color="#d9bdef"> Внимание! Номер телефона нужно вводить с 7<br> Напоминание/заметку писать на англ!!!</h5>
+            <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+    {% endblock %}

@@ -1,0 +1,39 @@
+{% load staticfiles %}
+    <html>
+        <head>
+            <title>Project CS</title>
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+            <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        </head>
+        <body>
+        <div class="page-header">
+
+            {% if user.is_authenticated %}
+
+                <a href="{% url 'post_new' %}" class="top-menu"><span class="glyphicon glyphicon-align-justify"></span></a>
+                <a href="{% url 'logout' %}" class="top-menu"><span class="glyphicon glyphicon-log-out"></span></a>
+
+
+
+            {% else %}
+                <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-log-in"></span></a>
+                <a href="{% url 'signup' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
+
+            {% endif %}
+            <h1><a href="/">Welcome to Project-CS for SMS!</a></h1>
+            <h4 face="Century Gothic" color="#d9bdef" >Небольшое приложение для СМС-уведомлений, созданное Таланцевой Екатериной</h4>
+        </div>
+        <div class="content container">
+            <div class="row">
+                <div class="col-md-8">
+                {% if user.is_authenticated %}
+                     <h5 face="Century Gothic" >Добро пожаловать, {{ user.username }}.</h5>
+                {% endif %}
+                {% block content %}
+                {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
