@@ -41,7 +41,7 @@ def send_sms(phones, text, total_price=0):
             # СМС отправлен, ответ сервера
             return answer
 
-# Приветствие
+# Приветствие  зависимости от времени
 data = datetime.strftime(datetime.now(), "%d.%m.%Y")
 time = datetime.strftime(datetime.now(), "%H:%M:%S")
 
@@ -57,89 +57,51 @@ cur = con.cursor()
 cur.execute('SELECT * FROM blog_post')
 
 for row in cur:
-    sms = []  # Создание текста сообщения ''
-    n = row[1]  # Имя пользователя
-
-    if row[3] == 1 and row[4] == 1 and row[7] != '':
-        url1 = 'https://weather.rambler.ru/v-sankt-peterburge/'   #Wearher
-        response = requests.get(url1)
-        page1 = BeautifulSoup(response.text, 'html.parser')
-        tem = page1.findAll(attrs={"href": "/v-sankt-peterburge/5-june/"})[2].string[21::20]
-        t ='Temperature: {tem}*'.format(tem=tem)
-
-        url2 = 'http://www.roads.gorodovoy.spb.ru/'   # Probki
-        response = requests.get(url2)
-        page2 = BeautifulSoup(response.text, 'html.parser')
-                    # prob = page2.findAll(attrs={"class": "YMaps-traffic-button-content__traffic-level"})
-        prob = 2
-        p = 'Situation on the road :{prob}'.format(prob=prob)
-
-        s = 'Task: {n}'.format(n=row[7])   #Tasks
-        sms.append('{a}{n}! {s}! {t}, {p}'.format(a=a, n=n, s=s, t=t, p=p))
-
-    elif row[3] == 0 and row[4] == 1 and row[7] != '':
-        url2 = 'http://www.roads.gorodovoy.spb.ru/'  # Probki
-        response = requests.get(url2)
-        page2 = BeautifulSoup(response.text, 'html.parser')
-                    # prob = page2.findAll(attrs={"class": "YMaps-traffic-button-content__traffic-level"})
-        prob = 2
-        p = 'Situation on the road :{prob}'.format(prob=prob)
-
-        s = 'Task: {n}'.format(n=row[7])  # Tasks
-        sms.append('{a}{n}! {s}! {p}'.format(a=a, n=n, s=s, p=p))
-
-    elif row[3] == 1 and row[4] == 0 and row[7] != '':
+    sms = []  # Создание текста сообщения
+    nam_id = row[1]  # Имя пользователя
+    sms.append(a)
+    sms.append(nam_id)
+    if row[3] == 1: # Погода
         url1 = 'https://weather.rambler.ru/v-sankt-peterburge/'  # Wearher
         response = requests.get(url1)
         page1 = BeautifulSoup(response.text, 'html.parser')
-        tem = page1.findAll(attrs={"href": "/v-sankt-peterburge/5-june/"})[2].string[21::20]
-        t = 'Temperature: {tem}*'.format(tem=tem)
-
-        s = 'Task: {n}'.format(n=row[7])  # Tasks
-        sms.append('{a}{n}! {s}! {t}'.format(a=a, n=n, s=s, t=t))
-
-    elif row[3] == 1 and row[4] == 1 and row[7] == '':
-        url1 = 'https://weather.rambler.ru/v-sankt-peterburge/'  # Wearher
-        response = requests.get(url1)
-        page1 = BeautifulSoup(response.text, 'html.parser')
-        tem = page1.findAll(attrs={"href": "/v-sankt-peterburge/5-june/"})[2].string[21::20]
-        t = 'Temperature: {tem}*'.format(tem=tem)
-
-        url2 = 'http://www.roads.gorodovoy.spb.ru/'  # Probki
-        response = requests.get(url2)
-        page2 = BeautifulSoup(response.text, 'html.parser')
-                    # prob = page2.findAll(attrs={"class": "YMaps-traffic-button-content__traffic-level"})
-        prob = 2
-        p = 'Situation on the road :{prob}'.format(prob=prob)
-
-        sms.append('{a}{n}! {t}, {p}'.format(a=a, n=n, p=p, t=t))
-
-    elif row[3] == 0 and row[4] == 0 and row[7] != '':
-
-        s = 'Task: {n}'.format(n=row[7])  # Tasks
-        sms.append('{a}{n}! {s}!'.format(a=a, n=n, s=s))
-
-    elif row[3] == 1 and row[4] == 0 and row[7] == '':
-        url1 = 'https://weather.rambler.ru/v-sankt-peterburge/'  # Wearher
-        response = requests.get(url1)
-        page1 = BeautifulSoup(response.text, 'html.parser')
-        tem = page1.findAll(attrs={"href": "/v-sankt-peterburge/5-june/"})[2].string[21::20]
-        t = 'Temperature: {tem}*'.format(tem=tem)
-
-        sms.append('{a}{n}! {t}'.format(a=a, n=n, t=t))
+        tem = page1.findAll(attrs={"href": "/v-sankt-peterburge/7-june/"})[2].string[21::20]
+        sms.append('Temperature: {tem}*'.format(tem=tem))
     else:
-        sms.append('{a}{n}!'.format(a=a, n=n))
-    sms_id = ''.join(sms)
+        pass
+    if row[9] == 1: # Пробки
+        url2 = 'http://www.roads.gorodovoy.spb.ru/'  # Probki
+        response = requests.get(url2)
+        page2 = BeautifulSoup(response.text, 'html.parser')
+        # prob = page2.findAll(attrs={"class": "YMaps-traffic-button-content__traffic-level"})
+        prob = 2
+        sms.append('Situation on the road :{prob}'.format(prob=prob))
+    else:
+        pass
+    if row[8] == 1: # Курс валют
+        url = 'http://www.banki.ru/products/currency/cash/sankt-peterburg/'
+        response = requests.get(url)
+        page = BeautifulSoup(response.text, 'html.parser')
+        usd = page.findAll('div', {'class': 'currency-table__large-text'})[0].string
+        eur = page.findAll('div', {'class': 'currency-table__large-text'})[3].string
+        sms.append('USD: {usd}, EUR: {eur}'.format(usd=usd, eur=eur))
+    else:
+        pass
+    if row[7] != '':  # Задача/напоминаиние
+        sms.append('Task: {n}'.format(n=row[7]))  # Tasks
+    else:
+        pass
+
+    sms_id = ' '.join(sms) # провожу сообщение в строку
     num_id = row[2]  # Номер пользователя
-    tim_id = row[8][:-3]
-    nam_id = row[1]
+    tim_id = row[5][:-3] # Время в формате час:мин
 
-    if tim_id == datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M"):
-        print(send_sms(num_id, sms_id))
-        prin=['Сообщение успешно отправлено', nam_id]
+    if tim_id == datetime.strftime(datetime.now(), "%Y-%m-%d %H:%M"): # проверка времени отправки сообщения с местным времением
+        print(send_sms(num_id, sms_id))  # отвечает за отправку сообщения
+        send=['Сообщение успешно отправлено', nam_id]
     else:
-        prin=['Сообщение не отправлено!', nam_id]
-    print(prin)
+        send=['Сообщение не отправлено!', nam_id, sms_id]
+    print(send)
 con.close()
 
 
