@@ -1,0 +1,11 @@
+{% extends 'blog/base.html' %}
+
+    {% block content %}
+    <h3><font face="Book Antiqua">Список пользователей для отправки СМС-уведомлений</font></h3>
+        {% for post in posts %}
+            <div class="post">
+                <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.Hello_name }}</a></h2>
+            </div>
+        {% endfor %}
+    {% endblock content %}
+

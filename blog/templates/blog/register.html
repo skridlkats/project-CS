@@ -1,0 +1,29 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    <h1> <font face="Century Gothic">Регистрация пользователя</font></h1>
+    <form action="." method="post">
+        <div class="input-group input-group-lg" id="sizing-addon3">
+    {% if form.error_dict %}
+      <p class="error">Пожалуйста исправьте нижеприведённые ошибки.</p>
+    {% endif %}
+
+    {% if form.username.errors %}
+      {{ form.username.html_error_list }}
+    {% endif %}
+    <label for="id_username"> <font face="Century Gothic">Логин:</font></label><br> {{ form.username }}
+
+    {% if form.password1.errors %}
+      {{ form.password1.html_error_list }}
+    {% endif %}  <br>
+    <label for="id_password1"> <font face="Century Gothic">Пароль:</font></label><br> {{ form.password1 }}
+
+    {% if form.password2.errors %}
+      {{ form.password2.html_error_list }}
+    {% endif %}   <br>
+    <label for="id_password2"> <font face="Century Gothic">Повторите пароль:</font></label><br> {{ form.password2 }} <br><br>
+
+    <input type="submit" value="SignUp" />
+    </div>
+    </form>
+{% endblock %}

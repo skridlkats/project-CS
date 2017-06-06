@@ -1,0 +1,18 @@
+{% extends 'blog/base.html' %}
+
+    {% block content %}
+        <div class="post">
+
+            <a class="btn btn-default" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            <h1>{{ post.Hello_name }}</h1>
+            <p>Номер телефона(c 7):  {{ post.Phone_number }}</p>
+            <p>Заметка/напоминание(писать только на английском):  {{ post.Task }}</p>
+            <p>Погода:  {{ post.Weather }}</p>
+            <p>Пробки:  {{ post.Traffic_jam }}</p>
+            <p>Валютный курс:  {{ post.Currency }}</p>
+            <p>Дата создания:  {{ post.Date }}</p>
+            <p>Дата отправки:  {{ post.Time_send }}</p>
+
+        </div>
+    {% endblock %}
+
