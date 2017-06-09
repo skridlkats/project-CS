@@ -11,8 +11,8 @@ import json
 from datetime import datetime, date, time
 
 def send_sms(phones, text, total_price=0):
-    login = 'skridlkats'  # Логин в smsc
-    password = 'ugufig95'  # Пароль в smsc
+    login = 'Name'  # Логин в smsc
+    password = 'Password'  # Пароль в smsc
     sender = 'py_test'  # Имя отправителя
     # Возможные ошибки
     errors = {
